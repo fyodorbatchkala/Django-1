@@ -18,10 +18,10 @@ class ProductCategory(models.Model):
     def __str__(self):
         return self.name
 
-
     class Meta:
         verbose_name = 'категория'
         verbose_name_plural = 'категории'
+
 
 class Product(models.Model):
     category = models.ForeignKey(
@@ -56,6 +56,7 @@ class Product(models.Model):
         verbose_name='количество на складе',
         default=0,
     )
+
     def __str__(self):
         return f'{self.name} - {self.pk}'
 
