@@ -9,7 +9,9 @@ from authapp.forms import ShopUserLoginForm, ShopUserEditForm, ShopUserRegisterF
 def login(request):
     title = 'входа'
 
-    login_form = ShopUserLoginForm(data=request.POST)
+    login_form = ShopUserLoginForm(data=request.POST or None)
+    next = request.GET['next'] if 'next' in request.GET.keys() else '' \
+                                                                    ''
     if request.method == 'POST' and login_form.is_valid():
         username = request.POST['username']
         password = request.POST['password']
@@ -17,11 +19,15 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         if user and user.is_active:
             auth.login(request, user)
-            return HttpResponseRedirect(reverse('index'))
+            if 'next' in request.POST.keys():
+                return HttpResponseRedirect(request.POST['next'])
+            else:
+                return HttpResponseRedirect(reverse('index'))
 
     context = {
         'title': title,
-        'login_form': login_form
+        'login_form': login_form,
+        'next': next,
     }
     return render(request, 'authapp/login.html', context)
 
@@ -42,12 +48,12 @@ def register(request):
             return HttpResponseRedirect(reverse('auth:login'))
     else:
         register_form = ShopUserRegisterForm()
-
     context = {
         'title': title,
         'register_form': register_form
     }
     return render(request, 'authapp/register.html', context)
+
 
 def edit(request):
     title = 'профиль'
@@ -60,7 +66,6 @@ def edit(request):
             return HttpResponseRedirect(reverse('auth:edit'))
     else:
         edit_form = ShopUserEditForm(instance=request.user)
-
     context = {
         'title': title,
         'edit_form': edit_form

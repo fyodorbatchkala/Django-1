@@ -27,7 +27,6 @@ urlpatterns = [
     path('basket/', include('basketapp.urls', namespace='basket'), name='basket'),
     path('', index, name='index'),
     path('contacts/', contacts, name='contacts')
-
 ]
 
 if settings.DEBUG:
