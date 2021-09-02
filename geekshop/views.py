@@ -1,10 +1,22 @@
 from django.shortcuts import render
 
-# Create your views here.
 
 def index(request):
-    return render(request, 'geekshop/index.html')
+    title = 'магазин'
+    context = {
+        'slogan': 'супер предложения',
+        'greeting': 'привет, ',
+        'title': title,
+        'slogan': 'супер предложения',
+    }
+
+    return render(request, 'geekshop/index.html', context)
 
 
 def contacts(request):
-    return render(request, 'geekshop/contact.html')
+    title = 'контакты'
+    context = {
+        'greeting': 'привет, ',
+        'title': title,
+    }
+    return render(request, 'geekshop/contact.html', context)
